@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clipperdos</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090b11;color:#f4f5fa;font:15px system-ui,Arial}.wrap{max-width:900px;margin:auto;padding:28px 18px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:45px;font-weight:850;font-size:21px}.logo{background:linear-gradient(135deg,#9c78ff,#56d9d0);border-radius:11px;width:36px;height:36px;display:grid;place-items:center;color:#090b11}
+.hero{text-align:center;margin-bottom:28px}.hero h1{font-size:clamp(38px,7vw,62px);line-height:1.02;letter-spacing:-2px;margin:8px}.grad{background:linear-gradient(90deg,#b9a5ff,#66ded3);color:transparent;background-clip:text}.muted{color:#9ca6b7}.panel{background:#121722;border:1px solid #293244;border-radius:18px;padding:22px;margin:12px 0}.field{display:block;font-size:12px;font-weight:700;margin:14px 0 7px;color:#cbd3df}input[type=file]{width:100%;padding:13px;background:#090e17;border:1px dashed #3a465c;border-radius:11px;color:#bfc8d6}button{background:linear-gradient(110deg,#9b78ff,#6c86ff);border:0;border-radius:11px;padding:13px 18px;color:white;font-weight:800;cursor:pointer;margin-top:14px}button:disabled{opacity:.5;cursor:wait}.hint{font-size:12px;color:#8793a7;line-height:1.6}.status{margin-top:14px;color:#c7baff;white-space:pre-wrap;font-size:13px}.clip{border:1px solid #2b3547;border-radius:12px;padding:14px;margin-top:10px;background:#0c121c}.clip h3{font-size:14px;margin:0 0 6px}.clip p{font-size:12px;color:#a7b1c2;margin:0 0 10px}.clip a{color:#b8a5ff;font-weight:700;text-decoration:none}.foot{font-size:11px;color:#748094;text-align:center;margin:28px}
+</style></head><body><div class="wrap">
+<header><div class="logo">▶</div>clipperdos</header>
+<section class="hero"><div class="muted">AUTOMATIC SHORT-FORM CLIP MAKER</div><h1>Find the <span class="grad">best moments.</span></h1><p class="muted">Upload a video you own or have permission to edit. Clipperdos finds highlights and creates vertical clips.</p></section>
+<section class="panel">
+<h2 style="margin:0 0 4px">Create clips</h2><p class="hint">Choose an MP4, MOV or WEBM video. Processing happens on the server where this app is running.</p>
+<label class="field" for="video">Your video file</label><input id="video" type="file" accept="video/*">
+<label class="field" for="count">Number of clips</label><select id="count" style="width:100%;padding:12px;background:#090e17;color:white;border:1px solid #303b4d;border-radius:10px"><option>3</option><option selected>5</option><option>8</option></select>
+<button id="go">✦ Find my best clips</button><div class="status" id="status"></div>
+</section><section class="panel" id="results" style="display:none"><h2 style="margin:0">Your clips</h2><div id="list"></div></section>
+<p class="foot">CLIPPERDOS FREE MVP · Only process videos you are authorized to use.</p>
+</div>
+<script>
+const go=document.querySelector('#go'),status=document.querySelector('#status');
+go.onclick=async()=>{const f=document.querySelector('#video').files[0];if(!f){status.textContent='Choose a video first.';return}
+const data=new FormData();data.append('video',f);data.append('count',document.querySelector('#count').value);
+go.disabled=true;status.textContent='Uploading video… then transcribing and finding highlights. Large videos may take a while.';
+try{const r=await fetch('/api/clip',{method:'POST',body:data});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Processing failed');
+const list=document.querySelector('#list');list.innerHTML='';j.clips.forEach((c,i)=>{const el=document.createElement('div');el.className='clip';const h=document.createElement('h3');h.textContent=`#${i+1} · ${c.start_label} – ${c.end_label} · Score ${c.score}/100`;const p=document.createElement('p');p.textContent=c.caption;const a=document.createElement('a');a.href=c.url;a.download='';a.textContent='Download clip ↓';el.append(h,p,a);list.append(el)});document.querySelector('#results').style.display='block';status.textContent='Finished! Your clips are ready.'}
+catch(e){status.textContent='Error: '+e.message+'\\nCheck the server terminal for details.'}finally{go.disabled=false}};
+</script></body></html>

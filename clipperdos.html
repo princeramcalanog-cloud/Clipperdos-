@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clipperdos — Find the moment</title>
+<style>
+:root{--bg:#090b10;--panel:#11151e;--panel2:#171d29;--line:#252d3b;--text:#f4f6fb;--muted:#98a3b5;--accent:#8b6cff;--cyan:#55d6d0;--good:#8be0ac}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#28204c 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:1080px;margin:auto;padding:28px 22px 60px}.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:58px}.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.6px}.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--accent),#4e9bff);display:grid;place-items:center;box-shadow:0 7px 25px #755cff55}.logo svg{width:19px}.tag{color:var(--muted);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:6px 10px}
+.hero{text-align:center;max-width:720px;margin:0 auto 34px}.eyebrow{color:#b8aaff;text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}.hero h1{font-size:clamp(38px,7vw,64px);line-height:1.02;letter-spacing:-2.8px;margin:13px 0}.grad{background:linear-gradient(90deg,#b7a4ff,#69d9d1);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:16px;max-width:570px;margin:0 auto}
+.card{background:linear-gradient(180deg,#151a25,#10141c);border:1px solid var(--line);border-radius:20px;padding:23px;box-shadow:0 20px 70px #0005}.section-title{font-weight:750;font-size:16px;margin:0 0 5px}.sub{color:var(--muted);font-size:13px;margin:0 0 17px}.field-label{display:block;color:#c8d0dc;font-size:12px;font-weight:700;margin:15px 0 7px}.input,textarea{width:100%;background:#090d14;border:1px solid #2a3342;color:var(--text);border-radius:11px;padding:13px 14px;font:inherit;outline:none}.input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b6cff22}textarea{min-height:155px;resize:vertical;font:13px/1.7 ui-monospace,SFMono-Regular,monospace}.row{display:flex;gap:10px}.row .input{flex:1;min-width:0}.btn{border:0;border-radius:11px;padding:12px 17px;font-weight:800;font-size:13px;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-1px);filter:brightness(1.1)}.primary{background:linear-gradient(110deg,#9b7aff,#6c83ff);color:white;white-space:nowrap}.secondary{background:#202838;color:#dce3ef;border:1px solid #303b4d}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}.hint{font-size:11px;color:#7f8b9e;margin-top:9px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}.mini{background:#0d121a;border:1px solid var(--line);border-radius:13px;padding:15px}.mini h3{font-size:13px;margin:0 0 5px}.mini p{font-size:12px;color:var(--muted);margin:0}.results{margin-top:22px;display:none}.result-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:13px}.result-head h2{font-size:21px;margin:0}.result-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.clip{display:grid;grid-template-columns:74px 1fr auto;gap:14px;align-items:center;background:#101621;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:9px}.rank{width:66px;height:58px;border-radius:10px;background:linear-gradient(145deg,#30275b,#1d5260);display:grid;place-items:center;font-size:20px;font-weight:850;color:#c9c0ff}.clip h3{font-size:14px;margin:0 0 3px}.clip p{font-size:11px;color:var(--muted);margin:0}.score{font-size:11px;color:var(--good);font-weight:800}.clipbtn{background:#242d3c;color:#e9eef8;border:1px solid #354155;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:750;cursor:pointer}.empty{color:var(--muted);font-size:13px;padding:16px;border:1px dashed #354155;border-radius:12px}.notice{margin-top:17px;padding:12px 14px;border-radius:11px;background:#171a28;border:1px solid #34304f;color:#b9b4d9;font-size:11px}.footer{text-align:center;color:#687487;font-size:11px;margin-top:35px}
+@media(max-width:650px){.wrap{padding:20px 14px 40px}.nav{margin-bottom:42px}.layout{grid-template-columns:1fr}.row{flex-direction:column}.clip{grid-template-columns:55px 1fr}.rank{width:52px;height:52px}.clipbtn{grid-column:2;justify-self:start}.tag{display:none}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5.8v12.4L18 12 8 5.8Z" fill="white"/></svg></div>clipperdos</div>
+    <div class="tag">AI CLIP DISCOVERY · MVP</div>
+  </nav>
+  <header class="hero">
+    <div class="eyebrow">Turn long videos into moments</div>
+    <h1>Find the <span class="grad">best clip.</span><br>Skip the scroll.</h1>
+    <p>Paste a YouTube link and add its transcript. Clipperdos ranks the moments most likely to make strong short-form clips.</p>
+  </header>
+  <main>
+    <section class="card">
+      <h2 class="section-title">Start with a video</h2>
+      <p class="sub">Add a public YouTube URL, then paste a timestamped transcript.</p>
+      <label class="field-label" for="yt">YouTube video URL</label>
+      <div class="row"><input id="yt" class="input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off"><button class="btn secondary" id="openVideo">Open video ↗</button></div>
+      <label class="field-label" for="transcript">Timestamped transcript</label>
+      <textarea id="transcript" placeholder="[00:00] Today I'm going to show you something surprising.&#10;[00:14] Here's the mistake almost everyone makes...&#10;[00:28] But the weird part is what happened next."></textarea>
+      <div class="actions"><button class="btn primary" id="analyze">✦ Find my best clips</button><button class="btn secondary" id="sample">Try sample transcript</button><button class="btn secondary" id="clear">Clear</button></div>
+      <div class="hint">Format: [MM:SS] spoken words. Add one timestamp per line. Transcript text stays in this browser.</div>
+      <div class="notice">This first version ranks moments from the transcript you provide. It does not download YouTube videos or extract their audio. Only edit/export videos you own or have permission to use.</div>
+    </section>
+    <div class="layout">
+      <div class="mini"><h3>01 · Detect hooks</h3><p>Looks for surprising claims, questions, strong reactions and curiosity gaps.</p></div>
+      <div class="mini"><h3>02 · Rank moments</h3><p>Scores transcript sections and suggests short-form start and end times.</p></div>
+    </div>
+    <section class="results" id="results">
+      <div class="result-head"><div><h2>Top moments</h2><p id="resultMeta">Ranked from your transcript</p></div><button class="btn secondary" id="download">Export results</button></div>
+      <div id="clipList"></div>
+    </section>
+  </main>
+  <div class="footer">CLIPPERDOS · EARLY MVP · Built for creators</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const sample=`[00:00] Most people think making a viral video is all about having an expensive camera.
+[00:12] But that's actually the biggest mistake beginners make.
+[00:24] I tested the same idea with two videos and got a result I honestly didn't expect.
+[00:39] The simple version got three times more watch time.
+[00:52] Here's why: people don't click because your video looks expensive. They click because the first few seconds make them curious.
+[01:08] So instead of starting with an introduction, start with the surprising result.
+[01:20] And there's one more trick that makes people stay until the end.
+[01:33] Give them a question early, then don't answer it immediately.
+[01:48] That tiny change can completely change how your story feels.`;
+let lastResults=[];
+function seconds(t){let p=t.split(':').map(Number);return p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1]}
+function stamp(n){let h=Math.floor(n/3600),m=Math.floor(n%3600/60),s=n%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`}
+function parseTranscript(raw){
+ const lines=raw.split(/\n/).map(x=>x.trim()).filter(Boolean),out=[];
+ for(const line of lines){const match=line.match(/^\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?\s+(.+)$/);if(match)out.push({time:seconds(match[1]),text:match[2]})}
+ return out.sort((a,b)=>a.time-b.time)
+}
+const hookWords=['but','secret','mistake','surprising','shocking','nobody','never','everyone','why','how','truth','actually','instead','unexpected','crazy','changed','problem','trick','finally','because'];
+function score(text){
+ const t=text.toLowerCase();let s=35;
+ if(text.includes('?'))s+=12;
+ if(/\b(but|however|instead|actually|the truth|the secret)\b/i.test(t))s+=14;
+ if(/\b(you won't believe|what happened|here's why|most people|biggest mistake|one trick)\b/i.test(t))s+=17;
+ s+=Math.min(20,hookWords.filter(w=>t.includes(w)).length*4);
+ if(text.length>45&&text.length<210)s+=8;
+ if(text.length<25)s-=8;
+ return Math.max(20,Math.min(98,s));
+}
+function analyze(){
+ const url=$('yt').value.trim(),entries=parseTranscript($('transcript').value);
+ if(!url){alert('Paste a YouTube URL first.');return}
+ if(!/(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)/i.test(url)){alert('That does not look like a YouTube video URL.');return}
+ if(entries.length<2){alert('Add at least two timestamped transcript lines first.');return}
+ const candidates=entries.map((e,i)=>({start:e.time,text:e.text,score:score(e.text),next:entries[i+1]?.time??e.time+20}));
+ const duration=candidates.length?candidates[candidates.length-1].start+25:0;
+ const picked=[];
+ candidates.sort((a,b)=>b.score-a.score);
+ for(const c of candidates){if(picked.every(p=>Math.abs(p.start-c.start)>24)){const start=Math.max(0,c.start-3),end=Math.min(duration,c.start+Math.min(42,Math.max(20,c.next-c.start+24)));picked.push({...c,start,end});}if(picked.length===5)break}
+ picked.sort((a,b)=>b.score-a.score);lastResults=picked;
+ $('clipList').innerHTML='';
+ picked.forEach((p,i)=>{
+ const card=document.createElement('div');card.className='clip';
+ const rank=document.createElement('div');rank.className='rank';rank.textContent='#'+(i+1);
+ const body=document.createElement('div');const title=document.createElement('h3');title.textContent=p.text.length>100?p.text.slice(0,97)+'…':p.text;
+ const meta=document.createElement('p');meta.textContent=`${stamp(p.start)} – ${stamp(p.end)} · Suggested ${Math.round(p.end-p.start)} sec`;
+ const sc=document.createElement('div');sc.className='score';sc.textContent=p.score+'/100 hook score';body.append(title,meta,sc);
+ const btn=document.createElement('button');btn.className='clipbtn';btn.textContent='Open at timestamp ↗';btn.onclick=()=>window.open(videoAt(url,p.start),'_blank','noopener');
+ card.append(rank,body,btn);$('clipList').append(card);
+ });
+ $('resultMeta').textContent=`${picked.length} moments ranked · heuristic transcript analysis`;
+ $('results').style.display='block';$('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function videoAt(url,t){let id='';try{const u=new URL(url);id=u.hostname.includes('youtu.be')?u.pathname.slice(1):u.searchParams.get('v')||u.pathname.split('/').pop()}catch(e){}return `https://www.youtube.com/watch?v=${encodeURIComponent(id||'')}&t=${Math.floor(t)}s`}
+$('analyze').onclick=analyze;
+$('sample').onclick=()=>{$('transcript').value=sample;if(!$('yt').value)$('yt').value='https://www.youtube.com/watch?v=dQw4w9WgXcQ'};
+$('clear').onclick=()=>{$('yt').value='';$('transcript').value='';$('results').style.display='none';lastResults=[]};
+$('openVideo').onclick=()=>{const u=$('yt').value.trim();if(!u){alert('Paste a YouTube URL first.');return}if(!/(youtube\.com|youtu\.be)/i.test(u)){alert('Please enter a YouTube URL.');return}window.open(u,'_blank','noopener')};
+$('download').onclick=()=>{const content='CLIPPERDOS — TOP MOMENTS\n\n'+lastResults.map((p,i)=>`#${i+1} | ${stamp(p.start)}–${stamp(p.end)} | Score ${p.score}/100\n${p.text}\n`).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'text/plain'}));a.download='clipperdos-results.txt';a.click();URL.revokeObjectURL(a.href)};
+</script>
+</body></html>
